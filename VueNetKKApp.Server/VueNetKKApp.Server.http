@@ -1,0 +1,6 @@
+@VueNetKKApp.Server_HostAddress = http://localhost:5117
+
+GET {{VueNetKKApp.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
