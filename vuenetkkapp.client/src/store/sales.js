@@ -45,6 +45,12 @@ export const useSalesStore = defineStore('sales',
             },
 
             //----------------------------------------------------------------------------
+            async getFilteredSales(
+                dateDateTime_I
+            ){
+                let objApiResponse = await sales.getFilteredSales(dateDateTime_I);
+                this.arrobjSales = objApiResponse;
+            },
         }
     }
 );

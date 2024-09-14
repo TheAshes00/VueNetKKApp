@@ -45,6 +45,7 @@ export default{
         <RegisterSale></RegisterSale>
       </div>
     </Transition>
+
     <Transition>
       <div v-if="strActionSelected === 'view-sales' || strActionSelected === 'view-all'">
           <SalesComponent :strParent="strActionSelected"></SalesComponent>

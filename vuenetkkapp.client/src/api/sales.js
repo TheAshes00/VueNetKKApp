@@ -78,4 +78,26 @@ export default{
     },
     
     //------------------------------------------------------------------------------------
+    async getFilteredSales(
+        dateDateTime_I
+    ){
+        let objApiResponse = await axios.get(
+            strApiUrl+"Sales/GetFilteredSale/"+dateDateTime_I,
+            config)
+        
+        let arrFilteredSales = [];
+
+        try{
+            if(
+                objApiResponse.data.intStatus == 200
+            ){
+                arrFilteredSales = objApiResponse.data.objResponse
+            }
+        }catch(Ex){
+            alert("Session expired")
+            router.push("/");
+        }
+        
+        return arrFilteredSales
+    },
 }

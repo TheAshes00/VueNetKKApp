@@ -12,7 +12,7 @@ export default{
     data(){
         return{
             arrobjAllSales: [],
-            intIdentifier: 0,
+            dateDateFilter: "",
         }
     },
     async created(){
@@ -33,19 +33,23 @@ export default{
         this.arrobjAllSales = this.salesStore.arrobjSales
     },
     methods:{
-        filterArray(
-            boolReset
+        async filterArray(
+            // boolReset
         ){
-            if(
-                boolReset
-            ) {
+            // if(
+            //     boolReset
+            // ) {
+            //     this.arrobjAllSales = this.salesStore.arrobjSales
+            // }
+            // else{
+            //     // let arrFilteredArray = this.arrobjAllSales.filter( 
+            //     //     obj => obj.intPk == this.intIdentifier)
+            //     // this.arrobjAllSales = arrFilteredArray  
+
+                
+            // }
+            await this.salesStore.getFilteredSales(this.dateDateFilter);
                 this.arrobjAllSales = this.salesStore.arrobjSales
-            }
-            else{
-                let arrFilteredArray = this.arrobjAllSales.filter( 
-                    obj => obj.intPk == this.intIdentifier)
-                this.arrobjAllSales = arrFilteredArray  
-            }
         },
 
         //--------------------------------------------------------------------------------
@@ -62,7 +66,7 @@ export default{
     <form v-on:submit.prevent="filterArray(false)">
         <div class="search-button-container" v-if="strParent != 'view-sales'">
             <div class="input-text">
-                <input type="number" name="search-in" id="search-in" v-model="intIdentifier" required>
+                <input type="date" name="search-in" id="search-in" v-model="dateDateFilter" required>
             </div>
             
             <div class="">

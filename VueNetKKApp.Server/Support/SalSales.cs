@@ -13,6 +13,7 @@ namespace VueNetKKApp.Server.Support
         public static void subRegisterNewSale(
             DonutsContext context_M,
             SetsalSetSaleDto.In setsalesin_I,
+            DateTime dateTime_I,
             out ServansdtoServiceAnswerDto servans_O
             )
         {
@@ -31,6 +32,7 @@ namespace VueNetKKApp.Server.Support
                 saleentity.strAddress = setsalesin_I.strAddress;
                 saleentity.intPkDonut = setsalesin_I.intPkDonut;
                 saleentity.intPkAuth = intPkAuth;
+                saleentity.DateSaleDate = dateTime_I;
 
                 SalSalesDao.subAdd(context_M, saleentity);
             }
@@ -65,6 +67,33 @@ namespace VueNetKKApp.Server.Support
             }
             
             servans_O = new(200,darrallsalou);
+        }
+
+        //--------------------------------------------------------------------------------------------------------------
+        public static void subGetFilteredSales(
+            DonutsContext context_I,
+            DateTime dateTime_I,
+            out ServansdtoServiceAnswerDto servans_O
+            )
+        {
+            List<GetallsalGetAllSalesDto.Out> darrallsalou;
+
+            var filtered = context_I.SaleEntity
+                .Where(se => se.DateSaleDate == dateTime_I)
+                .Include(k => k.DonutEntity)
+                .Include(k => k.AuthEntity)
+                .Select( m => new GetallsalGetAllSalesDto.Out
+                {
+                    intPk= m.intPk,
+                    strClientName = m.strName,
+                    intQuantity = m.intQuantity,
+                    strDonutType = m.DonutEntity.strType,
+                    strUserName = m.AuthEntity.strUsername
+
+                }).ToList();
+            
+
+            servans_O = new(200, filtered);
         }
 
         //--------------------------------------------------------------------------------------------------------------

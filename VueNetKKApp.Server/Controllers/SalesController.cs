@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace VueNetKKApp.Server.Controllers
 {
-    [Authorize]
+    
     [ApiController]
     [Route("[controller]")]
     public class SalesController : ControllerBase
@@ -27,6 +27,7 @@ namespace VueNetKKApp.Server.Controllers
         }
 
         //--------------------------------------------------------------------------------------------------------------
+        [Authorize]
         [HttpPost("[action]")]
         public IActionResult AddNewSale(
             [FromBody]
@@ -43,6 +44,7 @@ namespace VueNetKKApp.Server.Controllers
 "intPkAuth": 1
 }
              */
+            DateTime dateTime = DateTime.Now.Date;
             ServansdtoServiceAnswerDto servansdto;
             using var context = new DonutsContext();
             using var transaction = context.Database.BeginTransaction();
@@ -57,7 +59,7 @@ namespace VueNetKKApp.Server.Controllers
                 }
                 else
                 {
-                    SalSales.subRegisterNewSale(context, setsalesin, out servansdto);
+                    SalSales.subRegisterNewSale(context, setsalesin, dateTime, out servansdto);
                     transaction.Commit();
                 }
             }
@@ -98,6 +100,31 @@ namespace VueNetKKApp.Server.Controllers
             IActionResult aresult = base.Ok(servansdto);
             return aresult;
         }
+        //--------------------------------------------------------------------------------------------------------------
+        [HttpGet("[action]/{dateTime}")]
+        public IActionResult GetFilteredSale(
+            [FromRoute]
+            DateTime dateTime
+        )
+        {
+            ServansdtoServiceAnswerDto servansdto;
+            using var context = new DonutsContext();
+
+            try
+            {
+                SalSales.subGetFilteredSales(context, dateTime, out servansdto);
+            }
+            catch (
+                Exception ex
+            )
+            {
+                servansdto = new ServansdtoServiceAnswerDto(400, "Error fetching data", ex.Message, null);
+            }
+
+            IActionResult aresult = base.Ok(servansdto);
+            return aresult;
+        }
+
         //--------------------------------------------------------------------------------------------------------------
     }
 }
